@@ -1,0 +1,111 @@
+This file contains instructions for setting up the app locally.
+
+BUILDING APP IMAGE
+> docker build -t url-shortener .
+
+RUNNING APP 
+> docker run -p 4000:80 url-shortener
+You can now access it on localhost:4000
+
+REBUIDLING IMAGE AFTER MAKING CHANGES
+> docker image ls 
+    Find the ID of the image you want to remove
+> docker image rm imageID
+    You might recieve an error like the following:
+    Error response from daemon: conflict: unable to delete imageID (must be forced) - image is being used by stopped container containerID
+    If you recieve that error, run the following:
+    > docker container rm containerID
+    > docker container rm imageID
+> docker build -t url-shortener .
+
+
+CASSANDRA FUNCTIONS
+    
+    Prune docker on the ips that you wish to host the cluster on just so there are no port conflicts
+    This can be done using pruneDocker.py program. Run `python3 pruneDocker.py` for instructions
+
+    - Starting a cluster
+        python3 cassandraDeploy.py network <IP1> <IP2> ... <IPN> # 1 or more ip address
+        # where <IP1> will be the master node
+
+    - Adding a new Node
+        python3 cassandraDeploy.py network newNode <MasterNodeIP> <NewNodeIP>
+    
+    - Removing a live node
+        python3 cassandraDeploy.py network rmNode <NodeIP>
+
+    - Closing all nodes
+        python3 cassandraDeploy.py network clean <IP1> .... <IPN>
+
+
+Start Docker
+# ssh into DH2020PC15
+ssh maisuri9@dh2020pc15.utm.utoronto.ca
+# Log into VM (password: hhhhiotwwg)
+ssh -p 2222 student@localhost
+# cd into the repo and run 
+> make build
+# leave all the swarms from each node 
+> docker swarm leave --force
+# if you want to start the swarm 
+> docker swarm init --advertise-addr 10.11.12.115
+> make start
+# Or if you want simple local testing with everything on one node 
+> make start-local 
+# wait for everything to start then you can make a curl request 
+> curl 'http://10.11.12.115:8080/?short=hello'
+
+Upload image to Docker Hub 
+> docker login
+> username: csc409group23
+> password: urlPassword
+> docker tag url-shortener csc409group23/url:part1
+> docker image ls
+> docker push csc409group23/url:part1 # publish the image
+
+Link your port
+ssh -L 8080:localhost:8080 -L 4000:localhost:4000 maisuri9@dh2020pc16.utm.utoronto.ca
+
+SCALING REDIS/CASSANDRA
+- Update the config.ini file in the root and then restart web containers
+- If you're running locally, 
+> docker container ls 
+> docker container restart containerID
+- If you're running in a swarm,
+> docker service update --force CSC409A2_web
+
+USING THE MAKEFILE TO RUN A DOCKER SWARM
+> make ip1=10.11.12.115 ip2=10.11.12.116 ip3=10.11.12.117 clean 
+> make build
+> make save
+> make run 
+^ The will start the swatm and the code to add more node is in worker.txt
+> make start 
+^ This will start the services 
+
+COMMANDS TO CHECK STATE 
+> docker container ls 
+> docker swarm ls 
+> docker image ls 
+> docker node ls
+
+DOCKER UPDATE 
+> docker service update --force 
+
+SET UP PASSWORDLESS LOGIN 
+> ssh-keygen -t rsa #PRESS ENTER UNTIL DONE
+ADD ALL NODES YOU WANT TO SSH INTO WITHOUT PASSWORD
+> ssh-copy-id 10.11.12.115
+> ssh-copy-id 10.11.12.116
+> ssh-copy-id 10.11.12.117
+
+REBLANCING 
+> docker service update --force utcyqpzhu2dp
+
+----------- NOTES FROM TUT -----------
+# Data peristence
+# - the data should presist even if docker prune is executed
+# - since cassandra is complicated in how cluster goes up
+# ie, if the master seed is in joining state, then other nodes cannot see the master node
+# hence will exit
+# - Can potentially use docker swarm

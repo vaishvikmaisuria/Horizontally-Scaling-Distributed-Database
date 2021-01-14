@@ -1,0 +1,6 @@
+Flask
+redis
+cassandra-driver
+python-multipart
+aiofiles
+jinja2
