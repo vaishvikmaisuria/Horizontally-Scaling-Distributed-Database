@@ -76,9 +76,11 @@ In order to stress test the system, we made a python script to conduct tests wit
 
 **Test 1:** 
 
-![](CSC409%20A2%20Final%20Document.002.png)![](CSC409%20A2%20Final%20Document.003.png)
+![](test1.png)
 
-**Test 2 ![](CSC409%20A2%20Final%20Document.004.png)![](CSC409%20A2%20Final%20Document.005.png)**
+**Test 2:** 
+
+![](test2.png)
 
 From the above 2 tests we can see that the overall  performance of put increases as we provide the architecture with less nodes but with higher dedicated cpu. This makes sense since the system is doing a batch put to the cassandra-cluster. 
 
