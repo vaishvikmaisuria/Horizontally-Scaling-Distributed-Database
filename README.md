@@ -1,9 +1,7 @@
 # URL-Shortener
 URL Shortener with a Horizontally Scaling Distributed Database
 
-**CSC409 Assignment 2** 
-
-**Aashdeep Brar, Abdulwasay Mehar and Vaishvik Maisuria utorid: braraash, meharabd and maisuri9** 
+** Built by: Aashdeep Brar, Abdulwasay Mehar and Vaishvik Maisuria** 
 
 **Nov 10, 2020** 
 
