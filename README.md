@@ -1,5 +1,5 @@
-# URL-Shortener
-URL Shortener with a Horizontally Scaling Distributed Database
+# Horizontally Scaling Distributed Database
+Maps a string called short to a string called long where long can be a link to a website with a Horizontally Scaling Distributed Database.
 
 ** Built by: Aashdeep Brar, Abdulwasay Mehar and Vaishvik Maisuria** 
 
